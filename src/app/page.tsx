@@ -125,19 +125,19 @@ function ReviewsCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="-left-12 border-[#b0bde6] bg-white text-[#0d2577] hover:bg-[#f8faff]" />
-        <CarouselNext className="-right-12 border-[#b0bde6] bg-white text-[#0d2577] hover:bg-[#f8faff]" />
+        <CarouselPrevious className="hidden sm:flex -left-12 border-[#b0bde6] bg-white text-[#0d2577] hover:bg-[#f8faff]" />
+        <CarouselNext className="hidden sm:flex -right-12 border-[#b0bde6] bg-white text-[#0d2577] hover:bg-[#f8faff]" />
       </Carousel>
 
       {/* Dots */}
-      <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-6 flex justify-center gap-3 sm:gap-2">
         {reviewImages.map((_, i) => (
           <button
             key={i}
             onClick={() => api?.scrollTo(i)}
-            className={`h-2.5 w-2.5 rounded-full transition-all ${
+            className={`h-3 w-3 rounded-full transition-all sm:h-2.5 sm:w-2.5 ${
               current === i
-                ? "bg-[#0d2577] w-6"
+                ? "bg-[#0d2577] w-8 sm:w-6"
                 : "bg-[#b0bde6] hover:bg-[#627acc]"
             }`}
             aria-label={`Go to review ${i + 1}`}
@@ -185,8 +185,8 @@ export default function Home() {
             </a>
           </nav>
           <a href="tel:0730599945">
-            <Button className="gap-2 rounded-full bg-[#ff9b36] px-6 hover:bg-[#e88520]">
-              <Phone className="h-4 w-4" />
+            <Button className="h-12 gap-2 rounded-full bg-[#ff9b36] px-4 hover:bg-[#e88520] sm:px-6">
+              <Phone className="h-5 w-5" />
               <span className="hidden sm:inline">(07) 3059 9945</span>
             </Button>
           </a>
@@ -221,21 +221,21 @@ export default function Home() {
               </p>
 
               <div className="mb-12 flex flex-col gap-4 sm:flex-row">
-                <a href="#contact">
+                <a href="#contact" className="w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="lg"
-                    className="rounded-full border-2 border-white bg-white px-8 text-[#0d2577] hover:bg-white/90"
+                    className="h-14 w-full rounded-full border-2 border-white bg-white px-8 text-base font-semibold text-[#0d2577] hover:bg-white/90 sm:h-12 sm:w-auto"
                   >
                     Get The Intro Offer
                   </Button>
                 </a>
-                <a href="tel:0730599945">
+                <a href="tel:0730599945" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="gap-2 rounded-full bg-[#ff9b36] px-8 hover:bg-[#e88520]"
+                    className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold hover:bg-[#e88520] sm:h-12 sm:w-auto"
                   >
-                    <Phone className="h-4 w-4" />
+                    <Phone className="h-5 w-5" />
                     (07) 3059 9945
                   </Button>
                 </a>
@@ -251,7 +251,7 @@ export default function Home() {
                   <p className="text-4xl font-bold text-white md:text-5xl">1,000+</p>
                   <p className="text-sm text-white/70">Patients Helped</p>
                 </div>
-                <div>
+                <div className="hidden sm:block">
                   <p className="text-4xl font-bold text-white md:text-5xl">6</p>
                   <p className="text-sm text-white/70">Days a Week</p>
                 </div>
@@ -262,7 +262,7 @@ export default function Home() {
             <div className="relative">
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-white shadow-2xl">
                 <img
-                  src="https://assets.guestsnapper.com/wedding-gallery-media/matt%20helping%20patient.jpeg"
+                  src="https://assets.guestsnapper.com/wedding-gallery-media/innervate%20chiro%20hero.jpg"
                   alt="Dr Matt helping a patient"
                   className="h-full w-full object-cover"
                 />
@@ -273,30 +273,31 @@ export default function Home() {
 
       </section>
 
-      {/* Trust Bar - Overlapping */}
-      <div className="relative z-20 container mx-auto -mt-8 px-4 lg:-mt-10 lg:px-8">
-        <Card className="rounded-2xl border border-[#b0bde6]/20 bg-white shadow-lg">
-          <CardContent className="flex flex-col items-center justify-between gap-4 p-5 sm:flex-row sm:gap-8 lg:px-10">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <BadgeCheck className="h-5 w-5 shrink-0 text-[#627acc]" />
-              <p className="text-sm font-medium text-[#0d2577]">All Health Funds Accepted</p>
-            </div>
-            <div className="hidden h-8 w-px bg-[#b0bde6]/50 sm:block" />
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <Users className="h-5 w-5 shrink-0 text-[#627acc]" />
-              <p className="text-sm font-medium text-[#0d2577]">Care for the Whole Family</p>
-            </div>
-            <div className="hidden h-8 w-px bg-[#b0bde6]/50 sm:block" />
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <CalendarCheck className="h-5 w-5 shrink-0 text-[#627acc]" />
-              <p className="text-sm font-medium text-[#0d2577]">Quick Appointments Available</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* About Section */}
-      <section className="relative z-0 bg-[#f8faff] pb-16 pt-16 md:pb-24 md:pt-20">
+      <section className="relative z-0 bg-[#f8faff] pb-16 pt-52 md:pb-24 md:pt-44">
+        {/* Trust Bar - Centered between sections */}
+        <div className="absolute left-0 right-0 top-0 z-20 -translate-y-1/2 px-4 lg:px-8">
+          <div className="container mx-auto">
+            <Card className="rounded-2xl border border-[#b0bde6]/20 bg-white shadow-lg">
+              <CardContent className="flex flex-col items-center justify-evenly gap-4 p-5 sm:gap-6 sm:p-6 md:flex-row lg:px-12 lg:py-8">
+                <div className="flex w-full items-center justify-center gap-3 text-center md:w-auto md:text-left">
+                  <BadgeCheck className="h-6 w-6 shrink-0 text-[#627acc]" />
+                  <p className="text-sm font-medium text-[#0d2577] sm:text-base lg:text-lg">All Health Funds Accepted</p>
+                </div>
+                <div className="hidden h-10 w-px bg-[#b0bde6]/50 md:block" />
+                <div className="flex w-full items-center justify-center gap-3 border-t border-[#b0bde6]/30 pt-4 text-center md:w-auto md:border-0 md:pt-0 md:text-left">
+                  <Users className="h-6 w-6 shrink-0 text-[#627acc]" />
+                  <p className="text-sm font-medium text-[#0d2577] sm:text-base lg:text-lg">Care for the Whole Family</p>
+                </div>
+                <div className="hidden h-10 w-px bg-[#b0bde6]/50 md:block" />
+                <div className="flex w-full items-center justify-center gap-3 border-t border-[#b0bde6]/30 pt-4 text-center md:w-auto md:border-0 md:pt-0 md:text-left">
+                  <CalendarCheck className="h-6 w-6 shrink-0 text-[#627acc]" />
+                  <p className="text-sm font-medium text-[#0d2577] sm:text-base lg:text-lg">Quick Appointments Available</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid items-start gap-12 lg:grid-cols-2">
             {/* Left - Photo */}
@@ -360,15 +361,15 @@ export default function Home() {
 
               {/* CTA */}
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <a href="#contact">
-                  <Button size="lg" className="gap-2 rounded-full bg-[#ff9b36] px-8 text-white hover:bg-[#e88520]">
+                <a href="#contact" className="w-full sm:w-auto">
+                  <Button size="lg" className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold text-white hover:bg-[#e88520] sm:h-12 sm:w-auto">
                     Get The Intro Offer
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-5 w-5" />
                   </Button>
                 </a>
-                <a href="tel:0730599945">
-                  <Button variant="outline" size="lg" className="gap-2 rounded-full border-2 border-[#0d2577] px-8 text-[#0d2577] hover:bg-[#0d2577]/5">
-                    <Phone className="h-4 w-4" />
+                <a href="tel:0730599945" className="w-full sm:w-auto">
+                  <Button variant="outline" size="lg" className="h-14 w-full gap-2 rounded-full border-2 border-[#0d2577] px-8 text-base font-semibold text-[#0d2577] hover:bg-[#0d2577]/5 sm:h-12 sm:w-auto">
+                    <Phone className="h-5 w-5" />
                     (07) 3059 9945
                   </Button>
                 </a>
@@ -423,10 +424,10 @@ export default function Home() {
               ))}
             </div>
 
-            <a href="#contact" className="mt-8 inline-block">
-              <Button size="lg" className="gap-2 rounded-full bg-[#ff9b36] px-8 text-white hover:bg-[#e88520]">
+            <a href="#contact" className="mt-8 block">
+              <Button size="lg" className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold text-white hover:bg-[#e88520] sm:h-12 sm:w-auto">
                 Claim Your $37 Voucher
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-5 w-5" />
               </Button>
             </a>
           </div>
@@ -478,15 +479,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-10 text-center">
-            <a href="#contact">
+          <div className="mt-10">
+            <a href="#contact" className="block sm:text-center">
               <Button
                 variant="outline"
                 size="lg"
-                className="gap-2 rounded-full border-2 border-[#0d2577] px-8 text-[#0d2577] hover:bg-[#f8faff]"
+                className="h-14 w-full gap-2 rounded-full border-2 border-[#0d2577] px-8 text-base font-semibold text-[#0d2577] hover:bg-[#f8faff] sm:h-12 sm:w-auto"
               >
                 Book Your Assessment
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-5 w-5" />
               </Button>
             </a>
           </div>
@@ -615,11 +616,11 @@ export default function Home() {
                   </p>
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-[#0d2577]">Name</Label>
+                      <Label htmlFor="name" className="text-sm font-medium text-[#0d2577] sm:text-base">Name</Label>
                       <Input
                         id="name"
                         placeholder="Your full name"
-                        className="h-12 rounded-xl border-[#b0bde6] bg-[#f8faff] focus:border-[#0d2577] focus:ring-[#0d2577]"
+                        className="h-14 rounded-xl border-[#b0bde6] bg-[#f8faff] text-base focus:border-[#0d2577] focus:ring-[#0d2577] sm:h-12"
                         value={formData.name}
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
@@ -628,12 +629,12 @@ export default function Home() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-[#0d2577]">Email</Label>
+                      <Label htmlFor="email" className="text-sm font-medium text-[#0d2577] sm:text-base">Email</Label>
                       <Input
                         id="email"
                         type="email"
                         placeholder="your@email.com"
-                        className="h-12 rounded-xl border-[#b0bde6] bg-[#f8faff] focus:border-[#0d2577] focus:ring-[#0d2577]"
+                        className="h-14 rounded-xl border-[#b0bde6] bg-[#f8faff] text-base focus:border-[#0d2577] focus:ring-[#0d2577] sm:h-12"
                         value={formData.email}
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
@@ -642,12 +643,12 @@ export default function Home() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="mobile" className="text-[#0d2577]">Mobile</Label>
+                      <Label htmlFor="mobile" className="text-sm font-medium text-[#0d2577] sm:text-base">Mobile</Label>
                       <Input
                         id="mobile"
                         type="tel"
                         placeholder="0400 000 000"
-                        className="h-12 rounded-xl border-[#b0bde6] bg-[#f8faff] focus:border-[#0d2577] focus:ring-[#0d2577]"
+                        className="h-14 rounded-xl border-[#b0bde6] bg-[#f8faff] text-base focus:border-[#0d2577] focus:ring-[#0d2577] sm:h-12"
                         value={formData.mobile}
                         onChange={(e) =>
                           setFormData({ ...formData, mobile: e.target.value })
@@ -656,10 +657,10 @@ export default function Home() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="message" className="text-[#0d2577]">How Can We Help?</Label>
+                      <Label htmlFor="message" className="text-sm font-medium text-[#0d2577] sm:text-base">How Can We Help?</Label>
                       <textarea
                         id="message"
-                        className="flex min-h-[100px] w-full rounded-xl border border-[#b0bde6] bg-[#f8faff] px-4 py-3 text-sm placeholder:text-[#727272] focus:border-[#0d2577] focus:outline-none focus:ring-2 focus:ring-[#0d2577]/20"
+                        className="flex min-h-[120px] w-full rounded-xl border border-[#b0bde6] bg-[#f8faff] px-4 py-4 text-base placeholder:text-[#727272] focus:border-[#0d2577] focus:outline-none focus:ring-2 focus:ring-[#0d2577]/20"
                         placeholder="Tell us about your condition..."
                         value={formData.message}
                         onChange={(e) =>
@@ -669,7 +670,7 @@ export default function Home() {
                     </div>
                     <Button
                       type="submit"
-                      className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520]"
+                      className="h-16 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520] sm:h-14"
                     >
                       Get My $37 Voucher
                       <ArrowRight className="h-5 w-5" />
