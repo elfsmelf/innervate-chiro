@@ -235,10 +235,10 @@ export default function Home() {
               Contact
             </a>
           </nav>
-          <a href="tel:0730599945">
+          <a href="tel:+61481882278">
             <Button className="h-12 gap-2 rounded-full bg-[#ff9b36] px-4 hover:bg-[#e88520] sm:px-6">
               <Phone className="h-5 w-5" />
-              <span className="hidden sm:inline">(07) 3059 9945</span>
+              <span className="hidden sm:inline">(04) 8188 2278</span>
             </Button>
           </a>
         </div>
@@ -281,13 +281,13 @@ export default function Home() {
                     Get The New Patient Offer
                   </Button>
                 </a>
-                <a href="tel:0730599945" className="w-full sm:w-auto">
+                <a href="tel:+61481882278" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold hover:bg-[#e88520] sm:h-12 sm:w-auto"
                   >
                     <Phone className="h-5 w-5" />
-                    (07) 3059 9945
+                    (04) 8188 2278
                   </Button>
                 </a>
               </div>
@@ -414,10 +414,10 @@ export default function Home() {
                     <ArrowRight className="h-5 w-5" />
                   </Button>
                 </a>
-                <a href="tel:0730599945" className="w-full sm:w-auto">
+                <a href="tel:+61481882278" className="w-full sm:w-auto">
                   <Button variant="outline" size="lg" className="h-14 w-full gap-2 rounded-full border-2 border-[#0d2577] px-8 text-base font-semibold text-[#0d2577] hover:bg-[#0d2577]/5 sm:h-12 sm:w-auto">
                     <Phone className="h-5 w-5" />
-                    (07) 3059 9945
+                    (04) 8188 2278
                   </Button>
                 </a>
               </div>
@@ -630,13 +630,13 @@ export default function Home() {
               </ul>
 
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-                <a href="tel:0730599945" className="flex items-center gap-3 text-lg">
+                <a href="tel:+61481882278" className="flex items-center gap-3 text-lg">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
                     <Phone className="h-5 w-5 text-[#ff9b36]" />
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Call us now</p>
-                    <p className="font-semibold">(07) 3059 9945</p>
+                    <p className="font-semibold">(04) 8188 2278</p>
                   </div>
                 </a>
                 <div className="flex items-center gap-3 text-lg">
@@ -717,7 +717,7 @@ export default function Home() {
                     </div>
                     {submitStatus === "error" && (
                       <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-center text-red-700 text-sm">
-                        Something went wrong. Please try again or call us at (07) 3059 9945.
+                        Something went wrong. Please try again or call us at (04) 8188 2278.
                       </div>
                     )}
                     <Button
@@ -763,8 +763,8 @@ export default function Home() {
               <div className="space-y-3 text-white/70">
                 <p className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-[#ff9b36]" />
-                  <a href="tel:0730599945" className="hover:text-white">
-                    (07) 3059 9945
+                  <a href="tel:+61481882278" className="hover:text-white">
+                    (04) 8188 2278
                   </a>
                 </p>
                 <p className="flex items-center gap-2">

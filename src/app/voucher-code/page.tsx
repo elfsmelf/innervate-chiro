@@ -18,10 +18,10 @@ export default function VoucherCode() {
               className="h-16 w-auto"
             />
           </a>
-          <a href="tel:0730599945">
+          <a href="tel:+61481882278">
             <Button className="h-12 gap-2 rounded-full bg-[#ff9b36] px-4 hover:bg-[#e88520] sm:px-6">
               <Phone className="h-5 w-5" />
-              <span className="hidden sm:inline">(07) 3059 9945</span>
+              <span className="hidden sm:inline">(04) 8188 2278</span>
             </Button>
           </a>
         </div>
@@ -53,9 +53,9 @@ export default function VoucherCode() {
             </div>
             <CardContent className="bg-white p-6 text-center">
               <p className="mb-4 text-lg font-semibold text-[#0d2577]">
-                Call (07) 3059 9945 to Book!
+                Call (04) 8188 2278 to Book!
               </p>
-              <a href="tel:0730599945">
+              <a href="tel:+61481882278">
                 <Button className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold text-white hover:bg-[#e88520] sm:w-auto">
                   <Phone className="h-5 w-5" />
                   Call Now
