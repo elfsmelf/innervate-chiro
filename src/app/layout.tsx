@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Merriweather_Sans, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const merriweatherSans = Merriweather_Sans({
@@ -31,6 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <Script
+          src="//cdn.dni.nimbata.com/56902072856.min.js"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body
         className={`${merriweatherSans.variable} ${playfair.variable} antialiased`}
       >
