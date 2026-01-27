@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { type CarouselApi } from "@/components/ui/carousel";
+import { useSourcebuster } from "@/hooks/use-sourcebuster";
 
 const services = [
   { name: "Neck Pain", description: "Relief from stiffness and tension" },
@@ -73,7 +74,7 @@ const examIncludes = [
   "Thorough Chiropractic Consultation",
   "Neurological & Orthopaedic Testing",
   "Detailed 21-Point Spinal Exam",
-  "Full Spinal X-Ray Analysis",
+  "Full Spinal X-ray Analysis (free with Medicare)",
 ];
 
 const reviewImages = [
@@ -149,16 +150,67 @@ function ReviewsCarousel() {
 }
 
 export default function Home() {
+  const trackingData = useSourcebuster();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    const submissionData = {
+      ...formData,
+      date_time: new Date().toISOString(),
+      ...(trackingData && {
+        channel: trackingData.channel,
+        source: trackingData.source,
+        medium: trackingData.medium,
+        campaign: trackingData.campaign,
+        content: trackingData.content,
+        term: trackingData.term,
+        gclid: trackingData.gclid,
+        firstSource: trackingData.firstSource,
+        firstMedium: trackingData.firstMedium,
+        firstCampaign: trackingData.firstCampaign,
+        visits: trackingData.visits,
+        pagesSeen: trackingData.pagesSeen,
+        landingPage: trackingData.landingPage,
+        leadPage: trackingData.leadPage,
+        referer: trackingData.referer,
+      }),
+    };
+
+    try {
+      const response = await fetch(
+        "https://hook.us1.make.com/9110qw7dfnci2cnut8fgn3o4max061xk",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(submissionData),
+        }
+      );
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", mobile: "", message: "" });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -210,7 +262,7 @@ export default function Home() {
               <h2 className="mb-6 text-2xl font-light text-white md:text-3xl lg:text-4xl">
                 Your Comprehensive Exam
                 <br />
-                & X-rays{" "}
+                & X-ray{" "}
                 <span className="font-bold text-[#ff9b36]">ONLY $37</span>
               </h2>
 
@@ -227,7 +279,7 @@ export default function Home() {
                     size="lg"
                     className="h-14 w-full rounded-full border-2 border-white bg-white px-8 text-base font-semibold text-[#0d2577] hover:bg-white/90 sm:h-12 sm:w-auto"
                   >
-                    Get The Intro Offer
+                    Get The New Patient Offer
                   </Button>
                 </a>
                 <a href="tel:0730599945" className="w-full sm:w-auto">
@@ -250,10 +302,6 @@ export default function Home() {
                 <div>
                   <p className="text-4xl font-bold text-white md:text-5xl">1,000+</p>
                   <p className="text-sm text-white/70">Patients Helped</p>
-                </div>
-                <div className="hidden sm:block">
-                  <p className="text-4xl font-bold text-white md:text-5xl">6</p>
-                  <p className="text-sm text-white/70">Days a Week</p>
                 </div>
               </div>
             </div>
@@ -292,7 +340,7 @@ export default function Home() {
                 <div className="hidden h-10 w-px bg-[#b0bde6]/50 md:block" />
                 <div className="flex w-full items-center justify-center gap-3 border-t border-[#b0bde6]/30 pt-4 text-center md:w-auto md:border-0 md:pt-0 md:text-left">
                   <CalendarCheck className="h-6 w-6 shrink-0 text-[#627acc]" />
-                  <p className="text-sm font-medium text-[#0d2577] sm:text-base lg:text-lg">Quick Appointments Available</p>
+                  <p className="text-sm font-medium text-[#0d2577] sm:text-base lg:text-lg">Easy Online Booking</p>
                 </div>
               </CardContent>
             </Card>
@@ -363,7 +411,7 @@ export default function Home() {
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a href="#contact" className="w-full sm:w-auto">
                   <Button size="lg" className="h-14 w-full gap-2 rounded-full bg-[#ff9b36] px-8 text-base font-semibold text-white hover:bg-[#e88520] sm:h-12 sm:w-auto">
-                    Get The Intro Offer
+                    Get The New Patient Offer
                     <ArrowRight className="h-5 w-5" />
                   </Button>
                 </a>
@@ -472,7 +520,7 @@ export default function Home() {
             {/* Image */}
             <div className="hidden overflow-hidden rounded-2xl lg:block">
               <img
-                src="https://assets.guestsnapper.com/wedding-gallery-media/matt%20at%20counter.jpg"
+                src="https://assets.guestsnapper.com/wedding-gallery-media/InnervateChiro596lowres.jpg"
                 alt="Dr Matt at Innervate Chiro"
                 className="h-full w-full object-cover"
               />
@@ -668,13 +716,30 @@ export default function Home() {
                         }
                       />
                     </div>
-                    <Button
-                      type="submit"
-                      className="h-16 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520] sm:h-14"
-                    >
-                      Get My $37 Voucher
-                      <ArrowRight className="h-5 w-5" />
-                    </Button>
+                    {submitStatus === "success" ? (
+                      <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-center">
+                        <div className="flex items-center justify-center gap-2 text-green-700 font-medium">
+                          <CheckCircle2 className="h-5 w-5" />
+                          Thank you! We&apos;ll be in touch soon.
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {submitStatus === "error" && (
+                          <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-center text-red-700 text-sm">
+                            Something went wrong. Please try again or call us at (07) 3059 9945.
+                          </div>
+                        )}
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="h-16 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520] disabled:opacity-50 sm:h-14"
+                        >
+                          {isSubmitting ? "Sending..." : "Get My $37 Voucher"}
+                          {!isSubmitting && <ArrowRight className="h-5 w-5" />}
+                        </Button>
+                      </>
+                    )}
                     <p className="text-center text-xs text-[#727272]">
                       We respect your privacy. Your information will never be shared.
                     </p>
