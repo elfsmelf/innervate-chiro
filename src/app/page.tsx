@@ -200,8 +200,7 @@ export default function Home() {
       );
 
       if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", mobile: "", message: "" });
+        window.location.href = "/voucher-code";
       } else {
         setSubmitStatus("error");
       }
@@ -716,30 +715,19 @@ export default function Home() {
                         }
                       />
                     </div>
-                    {submitStatus === "success" ? (
-                      <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-center">
-                        <div className="flex items-center justify-center gap-2 text-green-700 font-medium">
-                          <CheckCircle2 className="h-5 w-5" />
-                          Thank you! We&apos;ll be in touch soon.
-                        </div>
+                    {submitStatus === "error" && (
+                      <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-center text-red-700 text-sm">
+                        Something went wrong. Please try again or call us at (07) 3059 9945.
                       </div>
-                    ) : (
-                      <>
-                        {submitStatus === "error" && (
-                          <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-center text-red-700 text-sm">
-                            Something went wrong. Please try again or call us at (07) 3059 9945.
-                          </div>
-                        )}
-                        <Button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="h-16 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520] disabled:opacity-50 sm:h-14"
-                        >
-                          {isSubmitting ? "Sending..." : "Get My $37 Voucher"}
-                          {!isSubmitting && <ArrowRight className="h-5 w-5" />}
-                        </Button>
-                      </>
                     )}
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="h-16 w-full gap-2 rounded-full bg-[#ff9b36] text-lg font-semibold text-white hover:bg-[#e88520] disabled:opacity-50 sm:h-14"
+                    >
+                      {isSubmitting ? "Sending..." : "Get My $37 Voucher"}
+                      {!isSubmitting && <ArrowRight className="h-5 w-5" />}
+                    </Button>
                     <p className="text-center text-xs text-[#727272]">
                       We respect your privacy. Your information will never be shared.
                     </p>
