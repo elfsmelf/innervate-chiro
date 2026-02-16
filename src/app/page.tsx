@@ -26,7 +26,8 @@ import {
   CalendarCheck,
   BadgeCheck,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { type CarouselApi } from "@/components/ui/carousel";
 import { useSourcebuster } from "@/hooks/use-sourcebuster";
 
@@ -149,7 +150,9 @@ function ReviewsCarousel() {
   );
 }
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const title = searchParams.get("title");
   const trackingData = useSourcebuster();
   const [formData, setFormData] = useState({
     name: "",
@@ -256,7 +259,7 @@ export default function Home() {
             {/* Left Content */}
             <div>
               <h1 className="mb-2 font-serif text-5xl font-normal italic leading-tight text-white drop-shadow-sm md:text-6xl lg:text-7xl">
-                New Client Offer
+                {title || "New Client Offer"}
               </h1>
               <h2 className="mb-6 text-2xl font-light text-white md:text-3xl lg:text-4xl">
                 Your Comprehensive Exam
@@ -798,5 +801,13 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   );
 }
