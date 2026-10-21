@@ -4,8 +4,62 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, CheckCircle2 } from "lucide-react";
 import Script from "next/script";
+import { useEffect } from "react";
+import {
+  CONVERSIONS,
+  getLeadUser,
+  reportConversion,
+  setUserData,
+  takePendingLead,
+} from "@/lib/tracking";
+
+const GHL_ORIGINS = ["https://api.leadconnectorhq.com", "https://x.activeflow.io", "https://link.msgsndr.com"];
+
+// GHL's "set-sticky-contacts" message carries the booker's details as a JSON string.
+function contactFromGhl(data: unknown): { email?: string; phone?: string } | null {
+  if (!Array.isArray(data)) return null;
+  for (const part of data) {
+    if (typeof part !== "string" || !part.startsWith("{")) continue;
+    try {
+      const c = JSON.parse(part);
+      if (c && (c.email || c.phone)) return { email: c.email, phone: c.phone };
+    } catch {
+      // not JSON
+    }
+  }
+  return null;
+}
 
 export default function VoucherCode() {
+  useEffect(() => {
+    // Form lead: fire once, only when arriving from a successful submit.
+    const lead = takePendingLead();
+    if (lead) {
+      setUserData(lead);
+      reportConversion(CONVERSIONS.leadForm, lead.leadId);
+    }
+
+    let booked = false;
+    const onMessage = (e: MessageEvent) => {
+      if (!GHL_ORIGINS.includes(e.origin) || !Array.isArray(e.data)) return;
+      const [eventName, payload] = e.data as [string, Record<string, string> | undefined];
+
+      if (eventName === "set-sticky-contacts") {
+        const contact = contactFromGhl(e.data);
+        if (contact) setUserData(contact);
+      }
+
+      if (eventName === "msgsndr-booking-complete" && !booked) {
+        booked = true;
+        const user = getLeadUser();
+        if (user) setUserData(user);
+        reportConversion(CONVERSIONS.booking, payload?.fingerprint || undefined);
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f8faff]">
       {/* Header */}
@@ -72,7 +126,7 @@ export default function VoucherCode() {
             <Card className="border-0 shadow-lg">
               <CardContent className="p-0">
                 <iframe
-                  src="https://x.activeflow.io/widget/booking/T4ADkzxyjZE9CYS4MQ7k"
+                  src="https://api.leadconnectorhq.com/widget/booking/T4ADkzxyjZE9CYS4MQ7k"
                   style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "600px" }}
                   scrolling="no"
                   id="msgsndr-calendar"

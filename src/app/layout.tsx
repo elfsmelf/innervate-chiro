@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Merriweather_Sans, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { TrackingProvider } from "@/components/tracking-provider";
+import { GOOGLE_ADS_ID } from "@/lib/tracking";
 
 const merriweatherSans = Merriweather_Sans({
   variable: "--font-body",
@@ -37,10 +39,22 @@ export default function RootLayout({
           src="//cdn.dni.nimbata.com/56902072856.min.js"
           strategy="beforeInteractive"
         />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-tag" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = gtag;
+gtag('js', new Date());
+gtag('config', '${GOOGLE_ADS_ID}', { allow_enhanced_conversions: true });`}
+        </Script>
       </head>
       <body
         className={`${merriweatherSans.variable} ${playfair.variable} antialiased`}
       >
+        <TrackingProvider />
         {children}
       </body>
     </html>

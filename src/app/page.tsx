@@ -30,6 +30,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { type CarouselApi } from "@/components/ui/carousel";
 import { useSourcebuster } from "@/hooks/use-sourcebuster";
+import { getClickIds, newLeadId, savePendingLead } from "@/lib/tracking";
 
 const services = [
   { name: "Neck Pain", description: "Relief from stiffness and tension" },
@@ -168,9 +169,15 @@ function HomeContent() {
     setIsSubmitting(true);
     setSubmitStatus("idle");
 
+    const leadId = newLeadId();
+    const clickIds = getClickIds();
     const submissionData = {
       ...formData,
+      lead_id: leadId,
       date_time: new Date().toISOString(),
+      gclid: trackingData?.gclid || clickIds.gclid,
+      gbraid: clickIds.gbraid,
+      wbraid: clickIds.wbraid,
       ...(trackingData && {
         channel: trackingData.channel,
         source: trackingData.source,
@@ -178,7 +185,6 @@ function HomeContent() {
         campaign: trackingData.campaign,
         content: trackingData.content,
         term: trackingData.term,
-        gclid: trackingData.gclid,
         firstSource: trackingData.firstSource,
         firstMedium: trackingData.firstMedium,
         firstCampaign: trackingData.firstCampaign,
@@ -191,18 +197,17 @@ function HomeContent() {
     };
 
     try {
-      const response = await fetch(
-        "https://hook.us1.make.com/9110qw7dfnci2cnut8fgn3o4max061xk",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(submissionData),
-        }
-      );
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
 
       if (response.ok) {
+        // The conversion fires on /voucher-code, once, using this hand-off.
+        savePendingLead({ leadId, email: formData.email, phone: formData.mobile });
         window.location.href = "/voucher-code";
       } else {
         setSubmitStatus("error");
