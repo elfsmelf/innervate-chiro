@@ -207,7 +207,12 @@ function HomeContent() {
 
       if (response.ok) {
         // The conversion fires on /voucher-code, once, using this hand-off.
-        savePendingLead({ leadId, email: formData.email, phone: formData.mobile });
+        savePendingLead({
+          leadId,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.mobile,
+        });
         window.location.href = "/voucher-code";
       } else {
         setSubmitStatus("error");

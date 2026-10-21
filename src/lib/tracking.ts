@@ -110,12 +110,16 @@ const USER_KEY = "ic_lead_user";
 
 export interface PendingLead extends LeadUserData {
   leadId: string;
+  name?: string;
 }
 
 export function savePendingLead(lead: PendingLead) {
   try {
     sessionStorage.setItem(PENDING_KEY, JSON.stringify(lead));
-    sessionStorage.setItem(USER_KEY, JSON.stringify({ email: lead.email, phone: lead.phone }));
+    sessionStorage.setItem(
+      USER_KEY,
+      JSON.stringify({ name: lead.name, email: lead.email, phone: lead.phone })
+    );
   } catch {
     // ignore
   }
@@ -133,7 +137,7 @@ export function takePendingLead(): PendingLead | null {
   }
 }
 
-export function getLeadUser(): LeadUserData | null {
+export function getLeadUser(): (LeadUserData & { name?: string }) | null {
   try {
     const raw = sessionStorage.getItem(USER_KEY);
     return raw ? JSON.parse(raw) : null;

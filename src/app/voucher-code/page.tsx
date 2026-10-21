@@ -4,14 +4,32 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, CheckCircle2 } from "lucide-react";
 import Script from "next/script";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   CONVERSIONS,
   getLeadUser,
   reportConversion,
   setUserData,
   takePendingLead,
+  toE164AU,
 } from "@/lib/tracking";
+
+const BOOKING_URL = "https://api.leadconnectorhq.com/widget/booking/T4ADkzxyjZE9CYS4MQ7k";
+
+// GHL's official embed script passes the iframe's URL params into the calendar, which
+// prefills its form from them (the consent box stays for the patient to tick).
+function bookingUrlFor(user: { name?: string; email?: string; phone?: string } | null): string {
+  if (!user) return BOOKING_URL;
+  const params = new URLSearchParams();
+  const [first, ...rest] = (user.name || "").trim().split(/\s+/);
+  if (first) params.set("first_name", first);
+  if (rest.length) params.set("last_name", rest.join(" "));
+  if (user.email) params.set("email", user.email.trim());
+  const phone = user.phone ? toE164AU(user.phone) : "";
+  if (phone) params.set("phone", phone);
+  const qs = params.toString();
+  return qs ? `${BOOKING_URL}?${qs}` : BOOKING_URL;
+}
 
 const GHL_ORIGINS = ["https://api.leadconnectorhq.com", "https://x.activeflow.io", "https://link.msgsndr.com"];
 
@@ -31,6 +49,16 @@ function contactFromGhl(data: unknown): { email?: string; phone?: string } | nul
 }
 
 export default function VoucherCode() {
+  // The calendar only renders once GHL's embed script is ready (it answers the
+  // calendar's request for params) and we've read the patient's details.
+  const [embedReady, setEmbedReady] = useState(false);
+  const [bookingSrc, setBookingSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBookingSrc(bookingUrlFor(getLeadUser()));
+  }, []);
+
   useEffect(() => {
     // Form lead: fire once, only when arriving from a successful submit.
     const lead = takePendingLead();
@@ -125,12 +153,16 @@ export default function VoucherCode() {
             </h2>
             <Card className="border-0 shadow-lg">
               <CardContent className="p-0">
-                <iframe
-                  src="https://api.leadconnectorhq.com/widget/booking/T4ADkzxyjZE9CYS4MQ7k"
-                  style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "600px" }}
-                  scrolling="no"
-                  id="msgsndr-calendar"
-                />
+                {embedReady && bookingSrc ? (
+                  <iframe
+                    src={bookingSrc}
+                    style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "600px" }}
+                    scrolling="no"
+                    id="msgsndr-calendar"
+                  />
+                ) : (
+                  <div style={{ minHeight: "600px" }} />
+                )}
               </CardContent>
             </Card>
           </div>
@@ -147,7 +179,13 @@ export default function VoucherCode() {
       </footer>
 
       {/* Booking Widget Script */}
-      <Script src="https://x.activeflow.io/js/embed.js" strategy="lazyOnload" />
+      {/* GHL's official embed script: resizes the calendar and passes it the prefill params. */}
+      <Script
+        src="https://link.msgsndr.com/js/form_embed.js"
+        strategy="afterInteractive"
+        onReady={() => setEmbedReady(true)}
+        onError={() => setEmbedReady(true)}
+      />
     </div>
   );
 }
